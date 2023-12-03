@@ -2,7 +2,9 @@ const Announcement = require("./announcement.model");
 
 const createAnnouncement = async (req, res) => {
   try {
-    req.body["image"] = req.file.path;
+    if (req.file) {
+      req.body["image"] = req.file.path;
+    }
     const newAnnouncement = new Announcement(req.body);
     const result = await newAnnouncement.save();
     res.status(200).json({
@@ -55,6 +57,9 @@ const getAnnouncementById = async (req, res) => {
 
 const UpdateAnnouncementById = async (req, res) => {
   try {
+    if (req.file) {
+      req.body["image"] = req.file.path;
+    }
     const result = await Announcement.findByIdAndUpdate(
       { _id: req.params.id },
       req.body,

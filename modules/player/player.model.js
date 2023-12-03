@@ -80,7 +80,7 @@ const playerSchema = new mongoose.Schema(
       },
       required: false,
     },
-    strengths_advantages: {
+    strengths_advantage: {
       type: String,
       required: true,
     },
