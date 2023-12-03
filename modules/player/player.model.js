@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const playerSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId, // user id
+      ref: "User",
+      required: true,
+    },
     full_name: {
       type: String,
       required: true,
@@ -20,10 +25,6 @@ const playerSchema = new mongoose.Schema(
       required: false,
     },
     height: {
-      type: Number,
-      required: false,
-    },
-    width: {
       type: Number,
       required: false,
     },
@@ -97,7 +98,7 @@ const playerSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: false,
+    timestamps: true,
   }
 );
 

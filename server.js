@@ -6,6 +6,7 @@ const path = require("path");
 
 // routes
 const userRoutes = require("./modules/user/user.routes");
+const announcementRoutes = require("./modules/announcement/announcement.routes");
 
 const app = express();
 const http = require("http");
@@ -23,6 +24,7 @@ connectDB();
 
 // routes
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/announcements", announcementRoutes);
 
 // static file serving
 app.use("/api/v1/uploads", express.static(path.join(__dirname, "/")));
