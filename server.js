@@ -8,6 +8,8 @@ const path = require("path");
 const userRoutes = require("./modules/user/user.routes");
 const announcementRoutes = require("./modules/announcement/announcement.routes");
 const playerRoutes = require("./modules/player/player.routes");
+const jobRoutes = require("./modules/jobs/job/job.routes");
+const jobApplyRoutes = require("./modules/jobs/jobApply/jobApply.routes");
 
 const app = express();
 const http = require("http");
@@ -27,6 +29,8 @@ connectDB();
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/announcements", announcementRoutes);
 app.use("/api/v1/players", playerRoutes);
+app.use("/api/v1/jobs", jobRoutes);
+app.use("/api/v1/job-applies", jobApplyRoutes);
 
 // static file serving
 app.use("/api/v1/uploads", express.static(path.join(__dirname, "/")));

@@ -8,12 +8,10 @@ const {
 } = require("../../utils/sendEmailHelpers");
 
 const registerUser = async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   try {
     const isExist = await User.findOne({ email: req.body.email });
-
     const isVerified = isExist?.isVerified;
-
     if (isExist && isVerified === true) {
       return res.status(403).send({
         message: `${req.body.email} is already Exist!`,
@@ -27,7 +25,6 @@ const registerUser = async (req, res) => {
       isExist.otp = otp;
 
       const updatedUser = await isExist.save();
-
       await sendVerificationCode(updatedUser, otp);
 
       res.status(200).send({
@@ -37,18 +34,16 @@ const registerUser = async (req, res) => {
     } else {
       const otp = randomstring.generate({ length: 5, charset: "numeric" });
       const newUser = new User({
-        name: req.body.name,
+        role: req.body.role,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         email: req.body.email,
-        company_name: req.body.companyName,
         password: bcrcypt.hashSync(req.body.password),
         otp,
-        companyAddress: req.body.companyAddress,
-        city: req.body.city,
-        zipCode: req.body.zipCode,
-        province: req.body.province,
-        country: req.body.country,
-        phoneNumber: req.body.phoneNumber,
-        role: req.body.role,
+        phone_number: req.body.phone_number,
+        nationality: req.body.nationality,
+        date_of_birth: req.body.date_of_birth,
+        sports: req.body.sports,
       });
 
       const user = await newUser.save();
@@ -338,11 +333,12 @@ const checkIsExistEmail = async (req, res) => {
 
 const updateUserInfo = async (req, res) => {
   try {
+    const { password, otp, ...other } = req.body;
     const isExist = await User.findOne({ _id: req.params.id });
     if (isExist) {
       const result = await User.findByIdAndUpdate(
         { _id: req.params.id },
-        req.body,
+        other,
         {
           new: true,
         }

@@ -1,23 +1,32 @@
+const User = require("../user/user.model");
 const Player = require("./player.model");
 
 const createPlayer = async (req, res) => {
   try {
-    if (req.files) {
-      let files = [];
-      if (req.files?.gallery) {
-        for (let i = 0; i < req.files?.gallery.length; i++) {
-          files.push(req.files?.gallery[i].path);
+    const isExist = await User.findById({ _id: req.body.user });
+    if (isExist) {
+      if (req.files) {
+        let files = [];
+        if (req.files?.gallery) {
+          for (let i = 0; i < req.files?.gallery.length; i++) {
+            files.push(req.files?.gallery[i].path);
+          }
+          req.body["gallery"] = files;
         }
-        req.body["gallery"] = files;
       }
+      const newNewPlayer = new Player(req.body);
+      const result = await newNewPlayer.save();
+      res.status(200).json({
+        success: true,
+        message: "Player Create Success",
+        data: result,
+      });
+    } else {
+      res.status(201).json({
+        success: false,
+        message: "Player Create Failed. User Not Found",
+      });
     }
-    const newNewPlayer = new Player(req.body);
-    const result = await newNewPlayer.save();
-    res.status(200).json({
-      success: true,
-      message: "Player Create Success",
-      data: result,
-    });
   } catch (error) {
     res.status(201).json({
       success: false,
