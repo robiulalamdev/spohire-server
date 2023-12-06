@@ -12,6 +12,10 @@ const jobRoutes = require("./modules/jobs/job/job.routes");
 const jobApplyRoutes = require("./modules/jobs/jobApply/jobApply.routes");
 const observationRoutes = require("./modules/observation/observation.routes");
 
+// conversations
+const chatRoutes = require("./modules/conversations/chat/chat.routes");
+const messageRoutes = require("./modules/conversations/message/message.routes");
+
 const app = express();
 const http = require("http");
 const Server = http.createServer(app);
@@ -33,6 +37,10 @@ app.use("/api/v1/players", playerRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/job-applies", jobApplyRoutes);
 app.use("/api/v1/observations", observationRoutes);
+
+// conversations
+app.use("/api/v1/chats", chatRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 // static file serving
 app.use("/api/v1/uploads", express.static(path.join(__dirname, "/")));
