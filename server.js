@@ -10,6 +10,7 @@ const announcementRoutes = require("./modules/announcement/announcement.routes")
 const playerRoutes = require("./modules/player/player.routes");
 const jobRoutes = require("./modules/jobs/job/job.routes");
 const jobApplyRoutes = require("./modules/jobs/jobApply/jobApply.routes");
+const observationRoutes = require("./modules/observation/observation.routes");
 
 const app = express();
 const http = require("http");
@@ -31,6 +32,7 @@ app.use("/api/v1/announcements", announcementRoutes);
 app.use("/api/v1/players", playerRoutes);
 app.use("/api/v1/jobs", jobRoutes);
 app.use("/api/v1/job-applies", jobApplyRoutes);
+app.use("/api/v1/observations", observationRoutes);
 
 // static file serving
 app.use("/api/v1/uploads", express.static(path.join(__dirname, "/")));

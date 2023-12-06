@@ -224,7 +224,6 @@ const forgetPassword = async (req, res) => {
         isExist.otp = otp;
         const updatedUser = await isExist.save();
         const data = await sendForgotOTPMail(updatedUser, otp);
-        console.log(data);
         res.status(200).send({
           message:
             "We have sent you verification code. Please check your email!",
