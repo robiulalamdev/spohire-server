@@ -1,3 +1,8 @@
+const { sendNotificationMail } = require("../../../utils/sendEmailHelpers");
+const {
+  getNewNotificationsEmails,
+  getUpdateNotificationsEmails,
+} = require("../../setting/setting.utiles");
 const Job = require("./job.model");
 
 const createJob = async (req, res) => {
@@ -7,6 +12,8 @@ const createJob = async (req, res) => {
     }
     const newNewJob = new Job(req.body);
     const result = await newNewJob.save();
+    const data = await getNewNotificationsEmails();
+    await sendNotificationMail(data);
     res.status(200).json({
       success: true,
       message: "Job Create Success",
@@ -65,6 +72,8 @@ const UpdateJobById = async (req, res) => {
       req.body,
       { new: true }
     );
+    const data = await getUpdateNotificationsEmails();
+    await sendNotificationMail(data);
     res.status(200).json({
       success: true,
       message: "Job Update Success",

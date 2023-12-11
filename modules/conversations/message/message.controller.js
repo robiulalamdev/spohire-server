@@ -1,9 +1,13 @@
+const { sendNotificationMail } = require("../../../utils/sendEmailHelpers");
+const { getChatNotificationsEmails } = require("../../setting/setting.utiles");
 const Message = require("./message.model");
 
 const addMessage = async (req, res) => {
   try {
     const newMessage = new Message(req.body);
     const result = await newMessage.save();
+    const data = await getChatNotificationsEmails();
+    await sendNotificationMail(data);
     res.status(200).json({
       success: true,
       message: "Message Send Success",

@@ -6,9 +6,9 @@ const {
   sendForgotOTPMail,
   sendWelcomeMail,
 } = require("../../utils/sendEmailHelpers");
+const Setting = require("../setting/setting.model");
 
 const registerUser = async (req, res) => {
-  console.log(req.body);
   try {
     const isExist = await User.findOne({ email: req.body.email });
     const isVerified = isExist?.isVerified;
@@ -95,6 +95,19 @@ const emailVerification = async (req, res) => {
       user.isVerified = true;
       await user.save();
       const result = await sendWelcomeMail(user);
+      const newSetting = new Setting({
+        user_id: user._id,
+        emails_notification: {
+          new_notifications: false,
+          update_notifications: false,
+          chat_notifications: false,
+        },
+        team_notification: {
+          new_notifications: false,
+          chat_notifications: false,
+        },
+      });
+      await newSetting.save();
       const token = await generateToken(user);
       if (result) {
         res.send({

@@ -1,3 +1,8 @@
+const { sendNotificationMail } = require("../../utils/sendEmailHelpers");
+const {
+  getUpdateNotificationsEmails,
+  getNewNotificationsEmails,
+} = require("../setting/setting.utiles");
 const Announcement = require("./announcement.model");
 
 const createAnnouncement = async (req, res) => {
@@ -7,6 +12,8 @@ const createAnnouncement = async (req, res) => {
     }
     const newAnnouncement = new Announcement(req.body);
     const result = await newAnnouncement.save();
+    const data = await getNewNotificationsEmails();
+    await sendNotificationMail(data);
     res.status(200).json({
       success: true,
       message: "Announcement Create Success",
@@ -65,6 +72,8 @@ const UpdateAnnouncementById = async (req, res) => {
       req.body,
       { new: true }
     );
+    const data = await getUpdateNotificationsEmails();
+    await sendNotificationMail(data);
     res.status(200).json({
       success: true,
       message: "Announcement Update Success",

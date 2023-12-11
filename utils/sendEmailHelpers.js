@@ -69,7 +69,41 @@ const sendWelcomeMail = async (data) => {
   return status;
 };
 
+const sendNotificationMail = async (emails) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.MAIL_USER,
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.MAIL_USER, // GMAIL_USER -> MAIL_USER
+      pass: process.env.MAIL_PASS, // GMAIL_PASS -> MAIL_PASS
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.MAIL_USER,
+    to: emails,
+    subject: `Welcome to Sphire – `,
+    html: `
+    <small style="color: #0f0f0f;">Hello <strong>Hello</strong>,</small>
+  `,
+  };
+
+  let status = true;
+  transporter.sendMail(mailOptions, (error, info) => {
+    console.log(info, error);
+    if (info) {
+      status = true;
+    }
+    if (error) {
+      status = false;
+    }
+  });
+  return status;
+};
+
 module.exports = {
   sendForgotOTPMail,
   sendWelcomeMail,
+  sendNotificationMail,
 };
